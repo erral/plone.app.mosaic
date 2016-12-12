@@ -77,10 +77,7 @@ define([
       // current tile state
       visible: function (tile) {
         return true;
-      },
-
-      // Should the action be undo-able?
-      undoable: false
+      }
 
     }, options);
 
@@ -118,9 +115,6 @@ define([
 
         // Exec actions
         mgr.actions[$(this).data("action")].exec(this);
-        if (mgr.actions[$(this).data("action")].undoable) {
-          $.mosaic.undo.snapshot();
-        }
       }
     });
   };
@@ -341,20 +335,6 @@ define([
               .html($.trim(text))
               .height(height));
         }
-      }
-    });
-
-    // Register undo action
-    $.mosaic.registerAction('undo', {
-      exec: function () {
-        $.mosaic.undo.undo();
-      }
-    });
-
-    // Register redo action
-    $.mosaic.registerAction('redo', {
-      exec: function () {
-        $.mosaic.undo.redo();
       }
     });
 
@@ -629,10 +609,6 @@ define([
 
         // Exec actions
         $.mosaic.actionManager.actions[action].exec();
-
-        if ($.mosaic.actionManager.actions[action].undoable) {
-          $.mosaic.undo.snapshot();
-        }
 
         // Prevent other actions
         return false;
